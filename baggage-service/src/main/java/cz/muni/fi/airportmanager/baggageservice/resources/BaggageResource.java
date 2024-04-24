@@ -59,6 +59,7 @@ public class BaggageResource {
     )
     @Counted(value = "baggage_list_count", description = "How many times baggage list was requested")
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<List<Baggage>>> list() {
         return baggageService.listAll()
                 .onItem().transform(baggage -> RestResponse.status(Response.Status.OK, baggage));
@@ -85,6 +86,7 @@ public class BaggageResource {
     @Counted(value = "baggage_create", description = "How many baggage have been created")
     @Timeout(250)
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<Baggage>> create(CreateBaggageDto baggage) {
         return baggageService.createBaggage(baggage)
                 .onItem().transform(newBaggage -> RestResponse.status(Response.Status.CREATED, newBaggage))
@@ -110,6 +112,7 @@ public class BaggageResource {
             description = "Baggage with given id does not exist"
     )
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<Baggage>> get(long id) {
         return baggageService.getBaggage(id)
                 .onItem().transform(baggage -> RestResponse.status(Response.Status.OK, baggage))
@@ -124,6 +127,7 @@ public class BaggageResource {
             description = "All baggage deleted"
     )
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<Void>> deleteAll() {
         return baggageService.deleteAllBaggage()
                 .onItem().transform(ignored -> RestResponse.status(Response.Status.OK));
@@ -146,6 +150,7 @@ public class BaggageResource {
     @Counted(value = "baggage_claim_count", description = "How many baggage have been claimed")
     @Timeout(250)
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<Object>> claim(@Parameter(name = "id", required = true) @PathParam("id") long id) {
         return baggageService.claimBaggage(id)
                 .onItem().transform(wasClaimed -> {
@@ -173,6 +178,7 @@ public class BaggageResource {
     @Counted(value = "baggage_lost_count", description = "How many baggage have been marked as lost")
     @Timeout(250)
     // TODO allow for all
+    @PermitAll
     public Uni<RestResponse<Object>> lost(@Parameter(name = "id", required = true) @PathParam("id") long id) {
         return baggageService.lostBaggage(id)
                 .onItem().transform(wasLost -> {
@@ -200,6 +206,7 @@ public class BaggageResource {
             )
     )
     // TODO allow only for role "user"
+    @RolesAllowed("user")
     public Uni<RestResponse<List<Baggage>>> getBaggageByPassengerId(@Parameter(name = "passengerId", required = true) @PathParam("passengerId") long passengerId) {
         // 50 % chance of failure for simulation purposes
         if (Math.random() < 0.5) {
