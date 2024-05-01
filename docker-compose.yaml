@@ -33,6 +33,7 @@ services:
       #      It communicates on the internal port not exposed one
       QUARKUS_BAGGAGE_RESOURCE_URL: http://baggage-service:8077
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      # TODO set QUARKUS_OTEL_ENDPOINT
       QUARKUS_OTEL_ENDPOINT: http://jaeger-all-in-one:4317
     depends_on:
       - passenger-db
