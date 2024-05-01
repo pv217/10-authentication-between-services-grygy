@@ -1,7 +1,6 @@
 name: Submission
 on:
-  pull_request:
-    types: [labeled]
+  push:
 jobs:
   submit:
     if: ${{ github.event.label.name == 'Submitted' }}
